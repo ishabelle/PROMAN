@@ -25,6 +25,8 @@ CREATE TABLE statuses (
     title text
 );
 
+
+
 ALTER TABLE ONLY boards
     ADD CONSTRAINT pk_board_id PRIMARY KEY (id);
 
@@ -47,9 +49,35 @@ CREATE TABLE board_status(
     CONSTRAINT board_status_pk PRIMARY KEY (board_id, statuses_id)
 );
 
--- INSERT TABLES
--- STATUSES
--- INSERT INTO statuses VALUES (0, 'new');
--- INSERT INTO statuses VALUES (1, 'in progress');
--- INSERT INTO statuses VALUES (2, 'testing');
--- INSERT INTO statuses VALUES (3, 'done');
+INSERT INTO boards VALUES (1, 'Board 1');
+INSERT INTO boards VALUES (2, 'Board 2');
+
+INSERT INTO statuses VALUES (0, 'new');
+INSERT INTO statuses VALUES (1, 'in progress');
+INSERT INTO statuses VALUES (2, 'testing');
+INSERT INTO statuses VALUES (3, 'done');
+INSERT INTO statuses VALUES (4, 'nowy stan');
+
+INSERT INTO board_status VALUES (1, 0);
+INSERT INTO board_status VALUES (1, 1);
+INSERT INTO board_status VALUES (1, 2);
+INSERT INTO board_status VALUES (1, 3);
+INSERT INTO board_status VALUES (1, 4);
+
+INSERT INTO board_status VALUES (2, 0);
+INSERT INTO board_status VALUES (2, 1);
+INSERT INTO board_status VALUES (2, 2);
+INSERT INTO board_status VALUES (2, 3);
+
+INSERT INTO cards VALUES (1, 1, 'new card 1', 0, 0);
+INSERT INTO cards VALUES (2, 1, 'new card 2', 0, 1);
+INSERT INTO cards VALUES (3, 1, 'in progress card', 1, 0);
+INSERT INTO cards VALUES (4, 1, 'planning', 2, 0);
+INSERT INTO cards VALUES (5, 1, 'done card 1', 3, 0);
+INSERT INTO cards VALUES (6, 1, 'done card 1', 3, 1);
+INSERT INTO cards VALUES (7, 2, 'new card 1', 0, 0);
+INSERT INTO cards VALUES (8, 2, 'new card 2', 0, 1);
+INSERT INTO cards VALUES (9, 2, 'in progress card', 1, 0);
+INSERT INTO cards VALUES (10, 2, 'planning', 2, 0);
+INSERT INTO cards VALUES (11, 2, 'done card 1', 3, 0);
+INSERT INTO cards VALUES (12, 2, 'done card 1', 3, 1);
