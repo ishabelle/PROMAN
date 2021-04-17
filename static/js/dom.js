@@ -1,7 +1,8 @@
 // It uses data_handler.js to visualize elements
-import { dataHandler } from "./data_handler.js";
+import {dataHandler} from "./data_handler.js";
 
 export let dom = {
+
     init: function () {
         // This function should run once, when the page is loaded.
         const createButton = document.createElement("button");
@@ -14,29 +15,33 @@ export let dom = {
 
     },
 
-    getStatuses: function (board_id) {
-      dataHandler.getStatuses(function(statuses){
 
-      });
+    getStatuses: function (board_id) {
+        dataHandler.getStatuses(function (statuses) {
+
+        });
     },
+
 
     loadBoards: function () {
         // retrieves boards and makes showBoards called
-        dataHandler.getBoards(function(boards){
+        dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
         });
     },
+
 
     loadBoard: function (board_id) {
         board_id = parseInt(board_id);
         dataHandler.getCardsByBoardId(board_id, this.showBoard);
     },
 
-    showBoard: function (cards, board_id){
+
+    showBoard: function (cards, board_id) {
 
         let statusObj = [];
 
-        dataHandler.getStatusesBoard(board_id, function(statuses) {
+        dataHandler.getStatusesBoard(board_id, function (statuses) {
             statusObj = statuses;
             let statusBoard = '';
 
@@ -99,7 +104,8 @@ export let dom = {
 
                 statusBoard += cardBoards;
                 statusBoard += `</div></div>`;
-            };
+            }
+
             let showCards = document.getElementById(board_id);
             const divMain = document.createElement('div');
             divMain.classList.add('statusBoard');
@@ -110,30 +116,29 @@ export let dom = {
 
             let cardTitles = document.getElementById(board_id).getElementsByTagName("p");
 
-            for (let cardTitle of cardTitles){
-                cardTitle.addEventListener("click", function(event){
+            for (let cardTitle of cardTitles) {
+                cardTitle.addEventListener("click", function (event) {
                     let cardTitleId = cardTitle.id
                     let cardTitleClass = cardTitle.className
                     // console.log(cardTitleId)
                     dom.cardTitleChange(cardTitleId, cardTitleClass, board_id)
                 })
-            };
-
+            }
 
             let cardsFromBoard = document.getElementById(board_id).querySelectorAll(".draggableCard");
 
-            for(let card of cardsFromBoard){
+            for (let card of cardsFromBoard) {
 
-                card.addEventListener("drag", function(event){
+                card.addEventListener("drag", function (event) {
                     //card = event.target;
                 });
 
-                card.addEventListener("dragover", function(event){
+                card.addEventListener("dragover", function (event) {
                     event.preventDefault();
                     event.dataTransfer.dropEffect = "move";
                 });
 
-                card.addEventListener("dragstart", function(event){
+                card.addEventListener("dragstart", function (event) {
                     console.log("Dragstart:")
                     event.currentTarget.classList.add("currDragged");
                     //event.currentTarget.classList.remove("row");
@@ -143,7 +148,7 @@ export let dom = {
                     event.dataTransfer.setData('idCard', event.currentTarget.dataset.id);
 
                     let statuses = board.querySelectorAll(".statusForBoard");
-                    for (let status of statuses){
+                    for (let status of statuses) {
                         let statusId = status.id.match(/-?\d(?:[,\d]*\.\d+|[,\d]*)/g)[1];
                         if (event.currentTarget.dataset.status_id != statusId)
                             status.classList.add('dropzone');
@@ -151,12 +156,12 @@ export let dom = {
 
                 });
 
-                card.addEventListener("dragend", function(event){
+                card.addEventListener("dragend", function (event) {
                     console.log(event.dataTransfer.getData("idCard"));
                     event.currentTarget.classList.remove("currDragged");
                     //event.currentTarget.classList.add("row");
                     let statuses = document.getElementById(board_id).querySelectorAll(".statusForBoard");
-                    for (let status of statuses){
+                    for (let status of statuses) {
                         status.classList.remove('dropzone');
                     }
                 });
@@ -164,26 +169,25 @@ export let dom = {
 
             let i = 0;
 
-            for(i; i < divMain.childNodes.length; i++){
+            for (i; i < divMain.childNodes.length; i++) {
                 let statusColumn = divMain.childNodes[i].lastChild
-                statusColumn.ondragenter = function(event){
+                statusColumn.ondragenter = function (event) {
                     event.preventDefault();
                     console.log("dragEnter");
-                  //  event.currentTarget.style.backgroundColor = "red";
+                    //  event.currentTarget.style.backgroundColor = "red";
                 };
 
-                statusColumn.ondragleave = function(event){
+                statusColumn.ondragleave = function (event) {
                     console.log("dragLeave");
                     event.preventDefault();
-                 //   event.currentTarget.style.backgroundColor = "white";
+                    //   event.currentTarget.style.backgroundColor = "white";
                 };
 
-                statusColumn.ondrop = function(event){
+                statusColumn.ondrop = function (event) {
                     console.log("Drop");
-                   event.preventDefault();
-                   if (event.currentTarget.classList.contains("dropzone"))
-                   {
-                       let data = event.dataTransfer.getData("idCard");
+                    event.preventDefault();
+                    if (event.currentTarget.classList.contains("dropzone")) {
+                        let data = event.dataTransfer.getData("idCard");
                         console.log(data);
                         let draggedCard = document.querySelector(".currDragged");
                         let cardId = draggedCard.dataset.id;
@@ -191,65 +195,65 @@ export let dom = {
                         let finalColumnId = event.currentTarget.id.match(/-?\d(?:[,\d]*\.\d+|[,\d]*)/g)[1];
 
                         let statusId = draggedCard.dataset.status_id;
-                        dataHandler.updateCardStatus(cardId, finalColumnId,function() {
-                                    let dragCard = document.querySelector(".currDragged")
+                        dataHandler.updateCardStatus(cardId, finalColumnId, function () {
+                            let dragCard = document.querySelector(".currDragged")
 
-                                    let oldStatusId = document.getElementById(board_id + 'status_'+statusId);
-                                    let newStatusId = document.getElementById(board_id + 'status_'+finalColumnId);
-                                    oldStatusId.removeChild(dragCard);
-                                    newStatusId.appendChild(finalColumnId);
-                         });
-                   }
+                            let oldStatusId = document.getElementById(board_id + 'status_' + statusId);
+                            let newStatusId = document.getElementById(board_id + 'status_' + finalColumnId);
+                            oldStatusId.removeChild(dragCard);
+                            newStatusId.appendChild(finalColumnId);
+                        });
+                    }
                 };
-        /*
-                statusColumn.addEventListener("dragenter", function(event){
-                    //event.preventDefault();
-                    // let ele = event.currentTarget;
+                /*
+                        statusColumn.addEventListener("dragenter", function(event){
+                            //event.preventDefault();
+                            // let ele = event.currentTarget;
 
-                    //if (ele.className == 'dropzone'){
-                    //}
+                            //if (ele.className == 'dropzone'){
+                            //}
 
-                });
+                        });
 
-                statusColumn.addEventListener("dragleave", function(event){
-                    //event.preventDefault();
-                    console.log("DragLeave " + event.currentTarget.id);
-                     let ele = document.getElementById(event.currentTarget.id);
+                        statusColumn.addEventListener("dragleave", function(event){
+                            //event.preventDefault();
+                            console.log("DragLeave " + event.currentTarget.id);
+                             let ele = document.getElementById(event.currentTarget.id);
 
-                });
+                        });
 
 
-               statusColumn.addEventListener("drop", function(event){
-                   event.preventDefault();
-                    console.log(event.currentTarget);
-                   if (event.currentTarget.classList.contains("dropzone"))
-                   {
-                       let data = event.dataTransfer.getData("idCard");
-                        console.log(data);
-                        let draggedCard = document.querySelector(".currDragged");
-                        console.log(draggedCard);
-                        let cardId = draggedCard.dataset.id;
+                       statusColumn.addEventListener("drop", function(event){
+                           event.preventDefault();
+                            console.log(event.currentTarget);
+                           if (event.currentTarget.classList.contains("dropzone"))
+                           {
+                               let data = event.dataTransfer.getData("idCard");
+                                console.log(data);
+                                let draggedCard = document.querySelector(".currDragged");
+                                console.log(draggedCard);
+                                let cardId = draggedCard.dataset.id;
 
-                        let finalColumnId = event.currentTarget.id.match(/-?\d(?:[,\d]*\.\d+|[,\d]*)/g)[1];
+                                let finalColumnId = event.currentTarget.id.match(/-?\d(?:[,\d]*\.\d+|[,\d]*)/g)[1];
 
-                        let statusId = draggedCard.dataset.status_id;
-                        console.log(cardId);
-                        console.log(statusId);
-                        dataHandler.updateCardStatus(cardId, finalColumnId,function(response) {
-                                    let dragCard = document.querySelector(".currDragged")
+                                let statusId = draggedCard.dataset.status_id;
+                                console.log(cardId);
+                                console.log(statusId);
+                                dataHandler.updateCardStatus(cardId, finalColumnId,function(response) {
+                                            let dragCard = document.querySelector(".currDragged")
 
-                                    let oldStatusId = document.getElementById(board_id + 'status_'+statusId);
-                                    let newStatusId = document.getElementById(board_id + 'status_'+finalColumnId);
-                                    oldStatusId.removeChild(dragCard);
-                                    newStatusId.appendChild(finalColumnId);
-                         });
-                        console.log(finalColumnId);
+                                            let oldStatusId = document.getElementById(board_id + 'status_'+statusId);
+                                            let newStatusId = document.getElementById(board_id + 'status_'+finalColumnId);
+                                            oldStatusId.removeChild(dragCard);
+                                            newStatusId.appendChild(finalColumnId);
+                                 });
+                                console.log(finalColumnId);
 
-                   }
+                           }
 
-                });
+                        });
 
-         */
+                 */
 
             }
 
@@ -259,7 +263,7 @@ export let dom = {
                 deleteCard.onclick = dom.eventClickDeleteCards;
             }
 
-            let createButton = document.getElementById(board_id+"addNewCardButton")
+            let createButton = document.getElementById(board_id + "addNewCardButton")
 
             createButton.addEventListener('click', function (event) {
                 dom.addNewCard(board_id);
@@ -285,7 +289,8 @@ export let dom = {
 
     },
 
-    cardTitleChange: function (cardTitleId, cardTitleClass, board_id){
+
+    cardTitleChange: function (cardTitleId, cardTitleClass, board_id) {
         let cardTitle = document.getElementById(cardTitleId)
         let parent = cardTitle.parentNode
         let input = `
@@ -293,23 +298,23 @@ export let dom = {
         `
         parent.removeChild(cardTitle)
         parent.insertAdjacentHTML("afterbegin", input)
-        let inputEvent = document.getElementById(board_id+'input'+cardTitleId)
-        inputEvent.addEventListener('keydown', function(event){
+        let inputEvent = document.getElementById(board_id + 'input' + cardTitleId)
+        inputEvent.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 let data = {
                     cardNewTitle: inputEvent.value,
                     cardId: cardTitleId
                 }
-                dataHandler.cardTitleChange(cardTitleId, data, (response)=>{
+                dataHandler.cardTitleChange(cardTitleId, data, (response) => {
                     let title = `
                         <p id = "${cardTitleId}" class="${cardTitleClass}">${data["cardNewTitle"]}</p>
                     `
                     parent.removeChild(inputEvent)
                     parent.insertAdjacentHTML("afterbegin", title)
                     let cardNewTitle = document.getElementById(cardTitleId)
-                    cardNewTitle.addEventListener("click", function(event){
-                    dom.cardTitleChange(cardTitleId, cardTitleClass, board_id)
-                })
+                    cardNewTitle.addEventListener("click", function (event) {
+                        dom.cardTitleChange(cardTitleId, cardTitleClass, board_id)
+                    })
                     console.log(response)
                 })
             }
@@ -319,14 +324,14 @@ export let dom = {
         // })
     },
 
-    clickStatusTitleChange: function (e)
-    {
+
+    clickStatusTitleChange: function (e) {
         let ids = e.currentTarget.parentNode.id.toString().match(/[0-9]/g).join([]);
-        console.log("Parent ID: "+ids);
+        console.log("Parent ID: " + ids);
         let status_id = ids;
         let changingStatusTitle = document.getElementById("changingStatusTitle");
 
-        if(changingStatusTitle != null){
+        if (changingStatusTitle != null) {
 
             let statusHeaderDiv = changingStatusTitle.parentNode.parentNode;
             // element to change (H3)
@@ -336,10 +341,10 @@ export let dom = {
 
             parentStatusChange.parentNode.removeChild(parentStatusChange);
 
-            dataHandler.getStatus(statusId, function (response){
-                    let title = response.title;
-                    parentStatusChange.innerHTML = title;
-                    statusHeaderDiv.prepend(parentStatusChange);
+            dataHandler.getStatus(statusId, function (response) {
+                let title = response.title;
+                parentStatusChange.innerHTML = title;
+                statusHeaderDiv.prepend(parentStatusChange);
             });
 
             parentStatusChange.addEventListener("click", dom.clickStatusTitleChange);
@@ -353,11 +358,11 @@ export let dom = {
 
         e.currentTarget.innerHTML = statusChangeButton;
         e.currentTarget.removeEventListener("click", dom.clickStatusTitleChange);
-        document.getElementById("changingStatusTitleButton").addEventListener('click', function(){
+        document.getElementById("changingStatusTitleButton").addEventListener('click', function () {
 
             let newTitle = document.getElementById("changingStatusTitle").value;
 
-            dataHandler.statusTitleChange(status_id, newTitle, function(){
+            dataHandler.statusTitleChange(status_id, newTitle, function () {
                 let changeTitleDiv = document.getElementById("status_" + status_id).querySelector(".changeStatus");
 
                 changeTitleDiv.innerHTML = newTitle;
@@ -367,13 +372,14 @@ export let dom = {
         });
     },
 
-    addNewCard: function(boardId) {
+
+    addNewCard: function (boardId) {
         const data = {
             title: "New card",
             boardId: boardId
         };
-        dataHandler.createNewCard(boardId, data, (response)=>{
-            let newContainer = document.getElementById(response.board_id+"_status"+response.status_id)
+        dataHandler.createNewCard(boardId, data, (response) => {
+            let newContainer = document.getElementById(response.board_id + "_status" + response.status_id)
             console.log(newContainer)
             let newCard = `<div class="draggableCard row" draggable="true" >
                                  <div class="col">
@@ -386,30 +392,29 @@ export let dom = {
                                </svg></button>
                            </div>`
             newContainer.insertAdjacentHTML("beforeend", newCard)
-            let deleteCard = document.getElementById("card"+response.id)
+            let deleteCard = document.getElementById("card" + response.id)
             deleteCard.onclick = dom.eventClickDeleteCards;
-            let cardTitleId = response.board_id+'_card'+response.id
-            let cardTitleClass = response.board_id+'_status'+response.status_id
+            let cardTitleId = response.board_id + '_card' + response.id
+            let cardTitleClass = response.board_id + '_status' + response.status_id
             let cardTitleChange = document.getElementById(cardTitleId)
             console.log(cardTitleChange)
-            cardTitleChange.addEventListener('click', function(event){
+            cardTitleChange.addEventListener('click', function (event) {
                 dom.cardTitleChange(cardTitleId, cardTitleClass, boardId)
             })
 
         })
     },
 
-    addNewColumn: function(boardId) {
 
-       const data = {
+    addNewColumn: function (boardId) {
+        const data = {
             statusId: "New status",
             boardId: boardId
         };
-
-        dataHandler.createNewColumn(boardId, data, (response)=>{
+        dataHandler.createNewColumn(boardId, data, (response) => {
             let boardDiv = document.getElementById(boardId);
             let columnsDiv = boardDiv.querySelector(".statusBoard");
-            console.log("Cols div: "+columnsDiv.lastChild);
+            console.log("Cols div: " + columnsDiv.lastChild);
             let newStatusColumn =
                 `<div><h3 class="changeStatus">New status</h3></div> 
                             <div class="row-12">
@@ -427,9 +432,8 @@ export let dom = {
                  </div>                          
                 `;
             console.log(newStatusColumn);
-
             let newColumn = document.createElement('div');
-            newColumn.id =`${boardId}_status${response.id}`;
+            newColumn.id = `${boardId}_status${response.id}`;
             newColumn.classList.add("statusForBoard");
             newColumn.classList.add("container");
             newColumn.innerHTML = newStatusColumn;
@@ -439,8 +443,8 @@ export let dom = {
             let deleteButton = document.getElementById(id);
             deleteButton.onclick = dom.deleteColumn;
         })
-
     },
+
 
     showBoards: function (boards) {
         // shows boards appending them to #boards div
@@ -450,18 +454,14 @@ export let dom = {
         for (let board of boards) {
             boardList += `
                  <div id="${board.id}" class="board">
-                <div id="${board.id}_title" class="board-title showCards">
-                <div id="boardTitle${board.id}" class="title" ><h1>${board.title}</h1></div>
-                </div>
-               <button class="showColumn btn btn-dark" type="button" id='openButton${board.id}'>Show board</button>
-               <button class="deleteBoard btn btn-dark" id='deleteButton${board.id}'>Delete board</button>
-    
-                   </div>
-                 
+                 <div id="${board.id}_title" class="board-title showCards">
+                 <div id="boardTitle${board.id}" class="title" ><h1>${board.title}</h1></div>
+                 </div>
+                 <button class="showColumn btn btn-dark" type="button" id='openButton${board.id}'>Show board</button>
+                 <button class="deleteBoard btn btn-dark" id='deleteButton${board.id}'>Delete board</button>
+                 </div>    
            `;
-
         }
-
 
         const outerHtml = `
             <div class="board-container container">
@@ -473,12 +473,12 @@ export let dom = {
         boardsContainer.insertAdjacentHTML("beforeend", outerHtml);
         // Event listeners on Board Titles so they can be changed
         let boardTitles = document.querySelectorAll('.title');
-        for (let boardTitle of boardTitles){
+        for (let boardTitle of boardTitles) {
             boardTitle.addEventListener('click', function (event) {
-            let boardId = boardTitle.id;
-            dom.boardNameChange(boardId)
+                let boardId = boardTitle.id;
+                dom.boardNameChange(boardId)
             })
-        };
+        }
 
         // Event listeners on Board show buttons
         let showBoardButtons = document.querySelectorAll('.showColumn');
@@ -489,25 +489,22 @@ export let dom = {
 
         // Event listeners on deleteBoard buttons
         let deleteBoardButtons = document.querySelectorAll('.deleteBoard');
-       // console.log(deleteBoardButtons)
-        for (let deleteBoardButton of deleteBoardButtons){
+        // console.log(deleteBoardButtons)
+        for (let deleteBoardButton of deleteBoardButtons) {
             deleteBoardButton.addEventListener('click', function (event) {
                 let boardId = deleteBoardButton.id;
                 dom.deleteBoard(boardId)
             });
-        };
-
-
+        }
         document.getElementById('progressBar').style.display = 'none';
-
-
     },
 
-    getButtonId: function(id){
 
+    getButtonId: function (id) {
     },
 
-    boardNameChange: function(boardId) {
+
+    boardNameChange: function (boardId) {
         const create_button = document.querySelector('.createbutton')
         document.body.removeChild(create_button)
         console.log(boardId)
@@ -525,14 +522,14 @@ export let dom = {
         button.classList.add("btn");
         button.classList.add("btn-dark");
         button.setAttribute("type", "button");
-        button.addEventListener('click', ()=> {
+        button.addEventListener('click', () => {
             const boardData = {
                 title: input.value,
                 boardId: boardId
             };
-            dataHandler.boardTitleChange(boardId, boardData, (response)=>{
+            dataHandler.boardTitleChange(boardId, boardData, (response) => {
                 console.log(response);
-                let boardTitle = document.getElementById("boardTitle"+response)
+                let boardTitle = document.getElementById("boardTitle" + response)
                 boardTitle.innerHTML = boardData["title"]
                 document.getElementById("container").removeChild(button);
                 document.getElementById("container").removeChild(form);
@@ -541,21 +538,23 @@ export let dom = {
         })
     },
 
-    openBoard: function (e){
+
+    openBoard: function (e) {
 
         let currId = e.currentTarget.id;
 
         let boardId = currId.match(/[0-9]/g);
 
-        let result=boardId.join('');
+        let result = boardId.join('');
         // Change button to different one (from expand to hide element)
-        let expandButton = document.getElementById('openButton'+result);
+        let expandButton = document.getElementById('openButton' + result);
         expandButton.onclick = dom.closeBoard;
         expandButton.innerText = 'Hide board';
         dom.loadBoard(result);
     },
 
-    closeBoard: function (e){
+
+    closeBoard: function (e) {
         let currId = e.currentTarget.id;
         let boardId = currId.match(/[0-9]/g);
         let result = boardId.join('');
@@ -563,7 +562,7 @@ export let dom = {
         let closingBoard = document.getElementById(result);
         closingBoard.removeChild(closingBoard.lastChild);
 
-        let expandButton = document.getElementById('openButton'+result);
+        let expandButton = document.getElementById('openButton' + result);
         expandButton.innerText = 'Show Board';
         closingBoard.removeChild(closingBoard.lastChild);
 
@@ -575,10 +574,13 @@ export let dom = {
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
     },
+
+
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
     },
+
 
     createNewBoard: function () {
         const create_button = document.querySelector('.createbutton')
@@ -596,14 +598,14 @@ export let dom = {
         document.getElementById("container").appendChild(button);
         button.innerText = 'Save';
         button.setAttribute("type", "button");
-        button.addEventListener('click', ()=>{
+        button.addEventListener('click', () => {
             //
             dom.init()
             const boardData = {
 
                 title: input.value
             };
-            dataHandler.createNewBoard(boardData, (response)=>{
+            dataHandler.createNewBoard(boardData, (response) => {
                 console.log(response, "response data handler");
                 let newBoard = `
                 <div id="${response}" class="board">
@@ -616,14 +618,14 @@ export let dom = {
 
                 let boardsContainer = document.querySelector('.board-container');
                 boardsContainer.insertAdjacentHTML("beforeend", newBoard);
-                let deleteBoardButton = document.getElementById('deleteButton'+response);
+                let deleteBoardButton = document.getElementById('deleteButton' + response);
                 deleteBoardButton.addEventListener('click', function (event) {
                     let boardId = deleteBoardButton.id;
                     dom.deleteBoard(boardId)
-                    });
-                let boardTitleChange = document.getElementById("boardTitle"+response);
+                });
+                let boardTitleChange = document.getElementById("boardTitle" + response);
                 boardTitleChange.addEventListener('click', function (event) {
-                dom.boardNameChange(response)
+                    dom.boardNameChange(response)
                 });
                 let showBoardButtons = document.querySelectorAll('.showColumn');
                 //console.log(showBoardButtons)
@@ -640,57 +642,56 @@ export let dom = {
 
     },
 
-    afterClickButton: function (e){
 
+    afterClickButton: function (e) {
     },
 
-     deleteBoard: function(boardId){
+
+    deleteBoard: function (boardId) {
         console.log(boardId)
-        dataHandler.deleteBoard(boardId, (response)=>{
+        dataHandler.deleteBoard(boardId, (response) => {
             console.log(response)
             let element = document.getElementById(response);
             console.log(element);
             let boardContainer = document.querySelector('.board-container')
             boardContainer.removeChild(element)
-                console.log(response)
+            console.log(response)
         })
-
     },
 
+
     eventClickDeleteCards: function (e) {
-         let currId = e.currentTarget.id;
-         let cardToDelete = document.getElementById(currId);
-         let parentCardDelete = cardToDelete.parentNode;
+        let currId = e.currentTarget.id;
+        let cardToDelete = document.getElementById(currId);
+        let parentCardDelete = cardToDelete.parentNode;
 
         let cardIds = currId.match(/[0-9]/g);
         let cardIdconverted = ''
-        for(let cardId of cardIds) {
+        for (let cardId of cardIds) {
             cardIdconverted += cardId
         }
-            console.log(cardIdconverted)
-            dom.deleteCard(parentCardDelete, cardIdconverted)
-
+        console.log(cardIdconverted)
+        dom.deleteCard(parentCardDelete, cardIdconverted)
     },
 
-    deleteCard: function (parentCardDelete, cardId){
 
-            dataHandler.deleteCard(cardId, function(response){
-                    let temp = parentCardDelete.parentNode;
-                    temp.removeChild(parentCardDelete);
-           })
+    deleteCard: function (parentCardDelete, cardId) {
 
+        dataHandler.deleteCard(cardId, function (response) {
+            let temp = parentCardDelete.parentNode;
+            temp.removeChild(parentCardDelete);
+        })
     },
 
-    deleteColumn: function(e){
+
+    deleteColumn: function (e) {
         let id = e.currentTarget.id;
         let ids = id.toString().match(/-?\d(?:[,\d]*\.\d+|[,\d]*)/g);
         let board_id = ids[0];
         let status_id = ids[1];
-        dataHandler.deleteColumn(board_id, status_id, function(){
+        dataHandler.deleteColumn(board_id, status_id, function () {
             let columnToDelete = document.getElementById(board_id + '_status' + status_id);
             columnToDelete.parentNode.removeChild(columnToDelete);
         });
     },
-
-
 };
