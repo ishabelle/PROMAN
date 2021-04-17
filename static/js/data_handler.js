@@ -5,6 +5,8 @@
 // object itself then you must use the 'this' keyword before. For example: 'this._data' below)
 export let dataHandler = {
     _data: {}, // it is a "cache for all data received: boards, cards and statuses. It is not accessed from outside.
+
+
     _api_get: function (url, callback) {
         // it is not called from outside
         // loads data from API, parses it and calls the callback with it
@@ -20,6 +22,7 @@ export let dataHandler = {
         .then(response => response.json())  // parse the response as JSON
         .then(json_response => callback(json_response));  // Call the `callback` with the returned object
     },
+
 
     _api_post: function (url, data, callback) {
        // console.log(data, "przed post")
@@ -42,6 +45,7 @@ export let dataHandler = {
     init: function () {
     },
 
+
     getBoards: function (callback) {
         // the boards are retrieved and then the callback function is called with the boards
         // Here we use an arrow function to keep the value of 'this' on dataHandler.
@@ -53,6 +57,7 @@ export let dataHandler = {
         });
     },
 
+
     getBoard: function (boardId, callback) {
 
         // the board is retrieved and then the callback function is called with the board
@@ -63,6 +68,8 @@ export let dataHandler = {
             callback(response, boardId);
         });
     },
+
+
     getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
          this._api_get('/get-statuses', (response) => {
@@ -72,6 +79,7 @@ export let dataHandler = {
             callback(response);
         });
     },
+
 
     getStatusesBoard: function (boardId, callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
@@ -91,6 +99,7 @@ export let dataHandler = {
         });
     },
 
+
     getCardsByBoardId: function (boardId, callback) {
 
         // the cards are retrieved and then the callback function is called with the cards
@@ -100,9 +109,13 @@ export let dataHandler = {
             callback(response, boardId);
         });
     },
+
+
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
     },
+
+
     createNewBoard: function (boardData, callback) {
         // creates new board, saves it and calls the callback function with its data
          this._api_post('/create-new-board', boardData, callback)
@@ -113,10 +126,13 @@ export let dataHandler = {
             callback(response);*/
        // });
     },
+
+
     createNewCard: function (boardId, data, callback) {
         // creates new card, saves it and calls the callback function with its data
         this._api_post("/add-new-card/"+boardId, data, callback)
     },
+
 
      createNewColumn: function (boardId, data, callback) {
         console.log(boardId)
@@ -124,20 +140,24 @@ export let dataHandler = {
         this._api_post("/add-new-column/"+boardId+"/", data, callback);
     },
 
+
     deleteBoard: function (boardId, callback) {
       //  console.log(boardId);
         this._api_post('/delete-board/' + boardId, boardId, callback)
     },
+
 
     boardTitleChange: function (boardId, boardData, callback){
        // console.log(boardData);
         this._api_post("/change-board-title/"+boardId, boardData, callback)
     },
 
+
     cardTitleChange: function (cardId, data, callback){
         console.log(data)
         this._api_post("/change-card-title/"+cardId, data, callback)
     },
+
 
     statusTitleChange: function (statusId, newTitle, callback){
          let data = {
@@ -147,14 +167,18 @@ export let dataHandler = {
         this._api_post("/change-status-title/", data, callback);
     },
 
+
    deleteCard: function (cardId, callback) {
         console.log(cardId, 'Data handler ID');
         this._api_post('/delete-card/' + cardId, cardId, callback);
     },
+
+
     deleteColumn: function (boardId, statusId, callback) {
         console.log(statusId, 'Data handler ID column');
         this._api_post('/delete-column/' + boardId, statusId, callback);
     },
+
 
     updateCardStatus: function(cardId, statusIdNew, boardId, callback) {
         let data = {
