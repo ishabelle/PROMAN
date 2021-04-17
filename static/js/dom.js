@@ -9,16 +9,14 @@ export let dom = {
         createButton.classList.add("createbutton");
         createButton.innerText = "Create new board";
         createButton.classList.add("btn");
-        createButton.classList.add("btn-dark");
+        createButton.classList.add("btn-outline-dark");
         document.body.appendChild(createButton);
         createButton.onclick = this.createNewBoard
-
     },
 
 
     getStatuses: function (board_id) {
         dataHandler.getStatuses(function (statuses) {
-
         });
     },
 
@@ -38,9 +36,7 @@ export let dom = {
 
 
     showBoard: function (cards, board_id) {
-
         let statusObj = [];
-
         dataHandler.getStatusesBoard(board_id, function (statuses) {
             statusObj = statuses;
             let statusBoard = '';
@@ -52,11 +48,8 @@ export let dom = {
             addColumnButton.innerHTML = 'Add column';
             addColumnButton.classList.add('addColumnButton');
             addColumnButton.classList.add("btn");
-            addColumnButton.classList.add("btn-dark");
-
-
+            addColumnButton.classList.add("btn-outline-dark");
             board.appendChild(addColumnButton);
-
             addColumnButton.addEventListener('click', function (e) {
                 //let boardId = addColButton.id.match(/[0-9]/g);
                 dom.addNewColumn(board_id);
@@ -68,7 +61,7 @@ export let dom = {
                                         <div id="status_${status.id}"><h3 class="changeStatus">${status.title}</h3> 
                                         <div class="row">
                                             <div class="col">
-                                                <button id="${board_id}addNewCardButton" class="addcard btn btn-dark">
+                                                <button id="${board_id}addNewCardButton" class="addcard btn btn-outline-dark">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                                     </svg>
@@ -83,8 +76,7 @@ export let dom = {
                                             </div>
                                         </div>   
                                   </div>
-                                   <div id="status${status.id}">                    
-                                       
+                                   <div id="status${status.id}"> 
                                 `;
                 for (let card of cards) {
                     if (card.status_id == status.id) {
@@ -353,7 +345,7 @@ export let dom = {
         let statusChangeButton = `
             <label for="changingStatusTitle">${e.currentTarget.innerHTML}</label>
             <input class="input-group input-group-sm mb-3" type="text" id="changingStatusTitle" name="changingStatusTitle">
-            <button type="button" id="changingStatusTitleButton" class="btn btn-dark">Save</button>
+            <button type="button" id="changingStatusTitleButton" class="btn btn-outline-dark">Save</button>
         `;
 
         e.currentTarget.innerHTML = statusChangeButton;
@@ -419,8 +411,8 @@ export let dom = {
                 `<div><h3 class="changeStatus">New status</h3></div> 
                             <div class="row-12">
                             <div class="col-sm">
-                              <button id="${boardId}addNewCardButton" class="addcard btn btn-dark"> 
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                              <button id="${boardId}addNewCardButton" class="addcard btn btn-outline-dark"> 
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                               </svg></button></div>
                        <div id="delete_board_${boardId}_status_${response.id}" class="containerForButtons col-sm">
@@ -457,8 +449,8 @@ export let dom = {
                  <div id="${board.id}_title" class="board-title showCards">
                  <div id="boardTitle${board.id}" class="title" ><h1>${board.title}</h1></div>
                  </div>
-                 <button class="showColumn btn btn-dark" type="button" id='openButton${board.id}'>Show board</button>
-                 <button class="deleteBoard btn btn-dark" id='deleteButton${board.id}'>Delete board</button>
+                 <button class="showColumn btn btn-outline-dark" type="button" id='openButton${board.id}'>Show board</button>
+                 <button class="deleteBoard btn btn-outline-dark" id='deleteButton${board.id}'>Delete board</button>
                  </div>    
            `;
         }
@@ -520,7 +512,7 @@ export let dom = {
         document.getElementById("container").appendChild(button);
         button.innerText = 'Save';
         button.classList.add("btn");
-        button.classList.add("btn-dark");
+        button.classList.add("btn-btn-outline-dark");
         button.setAttribute("type", "button");
         button.addEventListener('click', () => {
             const boardData = {
@@ -612,8 +604,8 @@ export let dom = {
                     <div id=${response} class="board-title">
                         <div id="boardTitle${response}" class="title" ><h1>${boardData['title']}</h1></div>
                     </div>
-                    <button class="showColumn btn btn-dark" id='openButton${response}'>Show board</button>
-                    <button class="deleteBoard btn btn-dark" id='deleteButton${response}'>Delete board</button>
+                    <button class="showColumn btn btn-outline-dark" id='openButton${response}'>Show board</button>
+                    <button class="deleteBoard btn btn-outline-dark" id='deleteButton${response}'>Delete board</button>
                 </div>`;
 
                 let boardsContainer = document.querySelector('.board-container');
