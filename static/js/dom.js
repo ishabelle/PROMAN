@@ -109,9 +109,11 @@ export let dom = {
         } else {
             const addButton = `<section class="add-board">
                                 <div id="add-board">
-                                    <button type="button" id="myBtn">Add new board</button>
-                                    <button value="registration" id="regBtn">Registration</button>
-                                    <button value="login" id="login">Login</button>
+                                    <button value="registration" id="regBtn"><i class="fa fa-pencil-square-o"></i> REGISTER</button>
+                                    <button value="login" id="login"><i class="fa fa-sign-in"></i> LOGIN</button>
+                                    <br>
+                                    <br>
+                                    <button type="button" id="myBtn"><i class="fa fa-plus-square-o"></i> ADD NEW BOARD</button>
                                 </div>
                             </section>`;
             boardsContainer.insertAdjacentHTML('beforebegin', addButton);
