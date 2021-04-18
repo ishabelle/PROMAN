@@ -72,6 +72,7 @@ export let start = function start() {
         return new Promise(resolve => {
             checkUsername(username, () => checkEmail(email, () => checkPasswords(password, passwordAgain, () => resolve(result.includes(false)))))
         })
+
     }
 
     function checkUsername(username, callback) {
