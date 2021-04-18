@@ -31,7 +31,7 @@ function initSlot(slot) {
     slot.addEventListener('dragenter', DragEnter);
     slot.addEventListener('dragover', DragOver);
     slot.addEventListener('dragleave', DragLeave);
-    slot.addEventListener('drop', Drag_drop);
+    slot.addEventListener('drop', DragDrop);
 }
 
 function dragStart(e) {
@@ -62,7 +62,8 @@ function DragOver(e) {
 function DragLeave(e) {
 }
 
-function Drag_drop(e) {
+
+function DragDrop(e) {
     if (e.dataTransfer.types.includes("card")) {
         let cardElement = document.querySelector('.dragged');
         e.currentTarget.appendChild(cardElement);
