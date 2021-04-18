@@ -3,8 +3,10 @@ import {drag} from "./drag_drop.js";
 
 let user = localStorage.getItem('username');
 let id = localStorage.getItem('id');
+
 console.log(user)
 console.log(id)
+
 export let dom = {
     init: function () {
     },
