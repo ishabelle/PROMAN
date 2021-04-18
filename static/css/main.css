@@ -31,6 +31,7 @@ button{
     font-size: 14px;
     font-family: sans-serif;
     padding: 4px 10px;
+    cursor: pointer;
 }
 
 .board-container{
@@ -52,9 +53,11 @@ section.board{
 }
 
 .board-title{
+    font-family: Impact, sans-serif ;
+
     margin: 13px;
     display: inline-block;
-    font-size: 20px;
+    font-size: 30px;
 }
 .board-title, .board-add, .board-toggle{
     display: inline-block;
