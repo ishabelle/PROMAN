@@ -1,5 +1,10 @@
+# import persistence
+
 import connection
-from psycopg2.extras import RealDictCursor
+from typing import List, Dict
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor, RealDictRow, DictCursor
+from psycopg2.extensions import AsIs
 
 
 @connection.connection_handler
@@ -8,7 +13,8 @@ def get_card_status(cursor: RealDictCursor, id):
         SELECT title
         FROM statuses
         WHERE id = %(id)s"""
-    cursor.execute(query, {'id': id})
+    param = {'id': id}
+    cursor.execute(query, param)
     return cursor.fetchall()
 
 
@@ -20,7 +26,8 @@ def get_cards_for_board(cursor: RealDictCursor, board_id):
     cards.status_id = statuses.id
     where board_id = %(board_id)s;
         """
-    cursor.execute(query, {'board_id': board_id})
+    param = {'board_id': board_id}
+    cursor.execute(query, param)
     return cursor.fetchall()
 
 
@@ -38,7 +45,8 @@ def get_boards(cursor: RealDictCursor):
 def get_title_boards(cursor: RealDictCursor):
     query = """
         SELECT title
-        FROM boards"""
+        FROM boards
+    """
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -83,15 +91,18 @@ def get_cards(cursor: RealDictCursor):
 def get_statuses(cursor: RealDictCursor):
     query = """
         SELECT id, title
-        FROM statuses"""
+        FROM statuses
+        """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
 def get_status(cursor: RealDictCursor, status_id):
+
     query = f"SELECT * FROM statuses WHERE id={int(status_id)}"
     cursor.execute(query)
+
     return cursor.fetchone()
 
 
@@ -102,19 +113,21 @@ def add_new_card(cursor: RealDictCursor, data):
     VALUES  ((select max(id) from cards) + 1, %(board_id)s, %(title)s, (0), (0));
     select * from cards 
     order by id desc
-    limit 1"""
-    cursor.execute(query, {
+    limit 1
+    """
+    param = {
         'board_id': data["boardId"],
         'title': data["title"]
-    })
+    }
+    cursor.execute(query, param)
     return cursor.fetchone()
 
 
 @connection.connection_handler
 def add_new_column(cursor: RealDictCursor, data):
-    add_col_query = f"INSERT INTO statuses VALUES ((SELECT MAX(id) from statuses) + 1, '{data['statusId']}');"
-    add_many_to_many_col = f"INSERT INTO board_status VALUES ({data['boardId']}, (SELECT MAX(id) from statuses));"
-    query = add_col_query + add_many_to_many_col
+    addColQuery = f"INSERT INTO statuses VALUES ((SELECT MAX(id) from statuses) + 1, '{data['statusId']}');"
+    addManyToManyCol = f"INSERT INTO board_status VALUES ({data['boardId']}, (SELECT MAX(id) from statuses));"
+    query = addColQuery + addManyToManyCol
     cursor.execute(query)
     cursor.execute(f"SELECT MAX(id) as id from statuses")
     return cursor.fetchone()
@@ -125,8 +138,8 @@ def get_statutes_board(cursor: RealDictCursor, board_id):
     query1 = f"SELECT statuses_id FROM board_status WHERE board_id={int(board_id)}"
     cursor.execute(query1)
     result1 = cursor.fetchall()
-    list_id = [str(result['statuses_id']) for result in result1]
-    query = f"SELECT id, title FROM public.statuses WHERE id IN ({', '.join(list_id)})"
+    lista_id = [str(result['statuses_id']) for result in result1]
+    query = f"SELECT id, title FROM public.statuses WHERE id IN ({', '.join(lista_id)})"
     cursor.execute(query)
     board_statuses = cursor.fetchall()
     return board_statuses
@@ -148,12 +161,13 @@ def add_board(cursor: RealDictCursor, data) -> list:
     INSERT INTO boards (id, title)
     VALUES  ((select max(id) from boards) + 1, %(title)s);
     """
-    cursor.execute(query, {
+    param = {
         'title': data['title']
-    })
+    }
+    cursor.execute(query, param)
     for state in range(4):
-        init_states_query = f"INSERT INTO board_status VALUES((select max(id) from boards), {state})"
-        cursor.execute(init_states_query)
+        initStatesQuery = f"INSERT INTO board_status VALUES((select max(id) from boards), {state})"
+        cursor.execute(initStatesQuery)
     return 0
 
 
@@ -163,14 +177,16 @@ def delete_board(cursor: RealDictCursor, data) -> list:
     DELETE FROM boards 
     WHERE id = %(data)s
     """
-    cursor.execute(query, {
+    param = {
         'data': data
-    })
+    }
+    cursor.execute(query, param)
     return ""
 
 
 @connection.connection_handler
 def delete_card(cursor: RealDictCursor, cardId):
+
     query = f"DELETE FROM cards WHERE id={int(cardId)}"
     cursor.execute(query)
     return ""
@@ -178,9 +194,9 @@ def delete_card(cursor: RealDictCursor, cardId):
 
 @connection.connection_handler
 def delete_column(cursor: RealDictCursor, boardId, statusId):
-    status_id = str(status_id)
-    query = f"DELETE FROM cards WHERE status_id={status_id} AND board_id={boardId}"
-    delete_column_query = f"DELETE FROM board_status WHERE board_id={boardId} AND statuses_id={status_id}"
+    statusId = str(statusId)
+    query = f"DELETE FROM cards WHERE status_id={statusId} AND board_id={boardId}"
+    deleteColumnQuery = f"DELETE FROM board_status WHERE board_id={boardId} AND statuses_id={statusId}"
     cursor.execute(query)
-    cursor.execute(delete_column_query)
+    cursor.execute(deleteColumnQuery)
     return ""
