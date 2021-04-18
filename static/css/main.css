@@ -1,14 +1,14 @@
 :root{
     --border-radius: 3px;
-    --status-1: #590000;
-    --status-2: #594300;
-    --status-3: #525900;
-    --status-4: #085900;
+    --status-1: #013129;
+    --status-2: #0f4c42;
+    --status-3: #328471;
+    --status-4: #7cdece;
 }
 
 body{
     min-width: 620px;
-    background: #ddd url(http://cdn.backgroundhost.com/backgrounds/subtlepatterns/diagonal-noise.png);
+    background: #000000;
     max-width: 90%;
     font-family: sans-serif;
 }
