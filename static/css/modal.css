@@ -18,7 +18,7 @@ input[type=text]:focus, input[type=password]:focus {
 
 .loginbtn,
 .signupbtn {
-    background-color: #4CAF50;
+    background-color: #0f4c42;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -84,7 +84,7 @@ hr {
 .close-login:hover,
 .close:hover,
 .close:focus {
-    color: #f44336;
+    color: #0f4c42;
     cursor: pointer;
 }
 
@@ -98,7 +98,7 @@ hr {
 .flash-message {
     display: none;
     padding: 20px;
-    background-color: #f44336;
+    background-color: #0f4c42;
     color: white;
     margin-bottom: 20px;
 }
