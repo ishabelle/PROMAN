@@ -1,18 +1,13 @@
-import { dom } from "./dom.js";
+import {dom} from "./dom.js"
+import {start} from "./registration_login_handler.js";
 
-function openBoard(board_id){
-    dom.loadBoard(board_id);
-}
 
-// This function is to initialize the application
 function init() {
-    // init data
     dom.init();
-    // loads the boards to the screen
     dom.loadBoards();
+    dom.createAddBoardButton(start);
+    dom.addBoard();
+    dom.addPrivateBoard();
 }
 
 init();
-
-
-
