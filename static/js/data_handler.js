@@ -187,5 +187,3 @@ export let dataHandler = {
         this._api_post('/update-card-status/' + cardId, data, callback);
     }
 };
-
-
