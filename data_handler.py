@@ -1,202 +1,176 @@
-# import persistence
-
 import connection
-from typing import List, Dict
-from psycopg2 import sql
-from psycopg2.extras import RealDictCursor, RealDictRow, DictCursor
-from psycopg2.extensions import AsIs
+from psycopg2.extras import RealDictCursor
 
 
 @connection.connection_handler
-def get_card_status(cursor: RealDictCursor, id):
-    query = """
-        SELECT title
-        FROM statuses
-        WHERE id = %(id)s"""
-    param = {'id': id}
-    cursor.execute(query, param)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_cards_for_board(cursor: RealDictCursor, board_id):
-    query = """
-    select cards.id, board_id, cards.title, status_id, "order"
-    from cards join statuses on
-    cards.status_id = statuses.id
-    where board_id = %(board_id)s;
-        """
-    param = {'board_id': board_id}
-    cursor.execute(query, param)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_boards(cursor: RealDictCursor):
-    query = """
-        SELECT id, title
-        FROM boards
-        ORDER BY id"""
+def get_all_from_table(cursor: RealDictCursor, table) -> list:
+    query = '''
+    SELECT *
+    FROM {}
+    ORDER BY id'''.format(table)
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_title_boards(cursor: RealDictCursor):
+def get_cards_by_status_id(cursor: RealDictCursor, status_id) -> list:
+    query = '''
+    SELECT *
+    FROM cards
+    WHERE status_id = {}'''.format(status_id)
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def create_new_board(cursor, owner=None):
+    cursor.execute("""
+    INSERT INTO boards (open, owner)
+    VALUES ('true', %(owner)s)
+    """, {'owner': owner})
+
+
+@connection.connection_handler
+def get_last_board(cursor: RealDictCursor):
     query = """
-        SELECT title
-        FROM boards
+    SELECT id, title, open FROM boards
+    ORDER BY id DESC
+    LIMIT 1
     """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def card_title_change(cursor: RealDictCursor, id, title):
-    query = f"UPDATE cards SET title='{title}' WHERE id={id}"
-    cursor.execute(query)
+def create_card(cursor: RealDictCursor, board_id, status_id):
+    query = '''
+    INSERT INTO cards (board_id, status_id)
+    VALUES (%(board_id)s, %(status_id)s)'''
+    cursor.execute(query, {"board_id": board_id, "status_id": status_id})
 
 
 @connection.connection_handler
-def update_board_title(cursor: RealDictCursor, board_id, title):
-    query = f"UPDATE boards SET title='{title}' WHERE id={board_id}"
+def delete_card(cursor: RealDictCursor, card_id):
+    query = '''
+    DELETE FROM cards
+    WHERE id = {}'''.format(card_id)
     cursor.execute(query)
+    return 'done'
 
 
 @connection.connection_handler
-def update_status_title(cursor: RealDictCursor, status_id, title):
-    query = f"UPDATE statuses SET title='{title}' WHERE id={status_id}"
-    cursor.execute(query)
-    return ""
+def create_status(cursor: RealDictCursor, board_id):
+    query = '''
+    INSERT INTO statuses (title, board_id)
+    VALUES ('new', %(board_id)s), ('in progress', %(board_id)s), ('testing', %(board_id)s),
+    ('done', %(board_id)s);'''
+    cursor.execute(query, {"board_id": board_id})
 
 
 @connection.connection_handler
-def update_card_status(cursor: RealDictCursor, cardId, newStatusId):
-    query = f"UPDATE cards SET status_id={int(newStatusId)} WHERE id={cardId}"
-    cursor.execute(query)
-    return ""
+def rename_board(cursor: RealDictCursor, title, id):
+    query = '''
+    UPDATE boards
+    SET title = %(title)s
+    WHERE id = %(id)s'''
+    cursor.execute(query, {"title": title, "id": id})
+    return 'done'
 
 
 @connection.connection_handler
-def get_cards(cursor: RealDictCursor):
-    query = """
-        SELECT id, board_id, title, status_id, "order"
-        FROM cards
-        ORDER BY id"""
+def update_status(cursor: RealDictCursor, new_id, old_id):
+    query = '''
+    UPDATE cards
+    SET status_id = %(new_id)s
+    WHERE id = %(old_id)s'''
+    cursor.execute(query, {"new_id": new_id, "old_id": old_id})
+    return 'done'
+
+
+@connection.connection_handler
+def rename_status(cursor: RealDictCursor, title, id):
+    query = '''
+    UPDATE statuses
+    SET title = %(title)s
+    WHERE id = %(id)s'''
+    cursor.execute(query, {"title": title, "id": id})
+    return 'done'
+
+
+@connection.connection_handler
+def rename_card(cursor: RealDictCursor, title, id):
+    query = '''
+    UPDATE cards
+    SET title = %(title)s
+    WHERE id = %(id)s'''
+    cursor.execute(query, {"title": title, "id": id})
+    return 'done'
+
+
+@connection.connection_handler
+def add_status(cursor: RealDictCursor, board_id):
+    query = '''
+    INSERT INTO statuses (board_id)
+    VALUES (%(board_id)s)'''
+    cursor.execute(query, {"board_id": board_id})
+
+
+@connection.connection_handler
+def get_last_status(cursor: RealDictCursor) -> list:
+    query = '''
+    SELECT * 
+    FROM statuses 
+    WHERE id=(
+    SELECT max(id) FROM statuses
+    )'''
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_statuses(cursor: RealDictCursor):
-    query = """
-        SELECT id, title
-        FROM statuses
-        """
+def delete_board(cursor: RealDictCursor, board_id):
+    query = '''
+    DELETE FROM boards
+    WHERE id = {}'''.format(board_id)
     cursor.execute(query)
+    return 'done'
+
+
+@connection.connection_handler
+def change_board_open_close(cursor: RealDictCursor, boolean, id_num):
+    query = '''
+    UPDATE boards
+    SET open = %(boolean)s
+    WHERE id = %(id_num)s'''
+    cursor.execute(query, {"boolean": boolean, "id_num": id_num})
+    return 'done'
+
+
+@connection.connection_handler
+def check_user_data(cursor: RealDictCursor, column, data):
+    query = '''
+    SELECT {}
+    FROM users
+    WHERE {} = %(data)s'''.format(column, column)
+    cursor.execute(query, {"data": data})
+    if cursor.fetchall():
+        return 'True'
+    return 'False'
+
+
+@connection.connection_handler
+def save_data(cursor: RealDictCursor, username, email, password):
+    query = '''
+    INSERT INTO users (username, password, email_address) 
+    VALUES(%(username)s, %(password)s, %(email)s)'''
+    cursor.execute(query, {'username': username, 'email': email, 'password': password})
+
+
+@connection.connection_handler
+def password_by_username(cursor: RealDictCursor, username):
+    query = '''
+    SELECT password, id
+    FROM users
+    WHERE username = %(username)s'''
+    cursor.execute(query, {"username": username})
     return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_status(cursor: RealDictCursor, status_id):
-
-    query = f"SELECT * FROM statuses WHERE id={int(status_id)}"
-    cursor.execute(query)
-
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def add_new_card(cursor: RealDictCursor, data):
-    query = """
-    INSERT INTO cards (id, board_id, title, status_id, "order")
-    VALUES  ((select max(id) from cards) + 1, %(board_id)s, %(title)s, (0), (0));
-    select * from cards 
-    order by id desc
-    limit 1
-    """
-    param = {
-        'board_id': data["boardId"],
-        'title': data["title"]
-    }
-    cursor.execute(query, param)
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def add_new_column(cursor: RealDictCursor, data):
-    addColQuery = f"INSERT INTO statuses VALUES ((SELECT MAX(id) from statuses) + 1, '{data['statusId']}');"
-    addManyToManyCol = f"INSERT INTO board_status VALUES ({data['boardId']}, (SELECT MAX(id) from statuses));"
-    query = addColQuery + addManyToManyCol
-    cursor.execute(query)
-    cursor.execute(f"SELECT MAX(id) as id from statuses")
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def get_statutes_board(cursor: RealDictCursor, board_id):
-    query1 = f"SELECT statuses_id FROM board_status WHERE board_id={int(board_id)}"
-    cursor.execute(query1)
-    result1 = cursor.fetchall()
-    lista_id = [str(result['statuses_id']) for result in result1]
-    query = f"SELECT id, title FROM public.statuses WHERE id IN ({', '.join(lista_id)})"
-    cursor.execute(query)
-    board_statuses = cursor.fetchall()
-    return board_statuses
-
-
-@connection.connection_handler
-def greatest_board_id(cursor: RealDictCursor):
-    query = """
-    SELECT MAX(id) id
-    FROM boards
-    """
-    cursor.execute(query)
-    return cursor.fetchone()['id']
-
-
-@connection.connection_handler
-def add_board(cursor: RealDictCursor, data) -> list:
-    query = """
-    INSERT INTO boards (id, title)
-    VALUES  ((select max(id) from boards) + 1, %(title)s);
-    """
-    param = {
-        'title': data['title']
-    }
-    cursor.execute(query, param)
-    for state in range(4):
-        initStatesQuery = f"INSERT INTO board_status VALUES((select max(id) from boards), {state})"
-        cursor.execute(initStatesQuery)
-    return 0
-
-
-@connection.connection_handler
-def delete_board(cursor: RealDictCursor, data) -> list:
-    query = """
-    DELETE FROM boards 
-    WHERE id = %(data)s
-    """
-    param = {
-        'data': data
-    }
-    cursor.execute(query, param)
-    return ""
-
-
-@connection.connection_handler
-def delete_card(cursor: RealDictCursor, cardId):
-
-    query = f"DELETE FROM cards WHERE id={int(cardId)}"
-    cursor.execute(query)
-    return ""
-
-
-@connection.connection_handler
-def delete_column(cursor: RealDictCursor, boardId, statusId):
-    statusId = str(statusId)
-    query = f"DELETE FROM cards WHERE status_id={statusId} AND board_id={boardId}"
-    deleteColumnQuery = f"DELETE FROM board_status WHERE board_id={boardId} AND statuses_id={statusId}"
-    cursor.execute(query)
-    cursor.execute(deleteColumnQuery)
-    return ""
