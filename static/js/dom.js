@@ -201,20 +201,14 @@ export let dom = {
                         statusColumn.addEventListener("dragenter", function(event){
                             //event.preventDefault();
                             // let ele = event.currentTarget;
-
                             //if (ele.className == 'dropzone'){
                             //}
-
                         });
-
                         statusColumn.addEventListener("dragleave", function(event){
                             //event.preventDefault();
                             console.log("DragLeave " + event.currentTarget.id);
                              let ele = document.getElementById(event.currentTarget.id);
-
                         });
-
-
                        statusColumn.addEventListener("drop", function(event){
                            event.preventDefault();
                             console.log(event.currentTarget);
@@ -225,26 +219,20 @@ export let dom = {
                                 let draggedCard = document.querySelector(".currDragged");
                                 console.log(draggedCard);
                                 let cardId = draggedCard.dataset.id;
-
                                 let finalColumnId = event.currentTarget.id.match(/-?\d(?:[,\d]*\.\d+|[,\d]*)/g)[1];
-
                                 let statusId = draggedCard.dataset.status_id;
                                 console.log(cardId);
                                 console.log(statusId);
                                 dataHandler.updateCardStatus(cardId, finalColumnId,function(response) {
                                             let dragCard = document.querySelector(".currDragged")
-
                                             let oldStatusId = document.getElementById(board_id + 'status_'+statusId);
                                             let newStatusId = document.getElementById(board_id + 'status_'+finalColumnId);
                                             oldStatusId.removeChild(dragCard);
                                             newStatusId.appendChild(finalColumnId);
                                  });
                                 console.log(finalColumnId);
-
                            }
-
                         });
-
                  */
 
             }
