@@ -8,46 +8,45 @@ import data_handler
 app = Flask(__name__)
 
 
-
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 
 @app.route("/get-boards")
 @json_response
 def get_boards():
-    return data_handler.get_all_from_table('boards')
+    return data_handler.get_all_from_table("boards")
 
 
 @app.route("/get-cards")
 @json_response
 def get_all_cards():
-    return data_handler.get_all_from_table('cards')
+    return data_handler.get_all_from_table("cards")
 
 
 @app.route("/get-statuses")
 @json_response
 def get_statuses():
-    return data_handler.get_all_from_table('statuses')
+    return data_handler.get_all_from_table("statuses")
 
 
-@app.route('/create-new-board', methods=['GET', 'POST'])
+@app.route("/create-new-board", methods=["GET", "POST"])
 @json_response
 def create_new_board():
     data_handler.create_new_board()
     top_board = data_handler.get_last_board()
-    data_handler.create_status(top_board[0]['id'])
+    data_handler.create_status(top_board[0]["id"])
     return top_board
 
 
-@app.route('/create-private-board', methods=['GET', 'POST'])
+@app.route("/create-private-board", methods=["GET", "POST"])
 @json_response
 def create_private_board():
     data = request.get_json()
-    data_handler.create_new_board(int(data['owner']))
+    data_handler.create_new_board(int(data["owner"]))
     top_board = data_handler.get_last_board()
-    data_handler.create_status(top_board[0]['id'])
+    data_handler.create_status(top_board[0]["id"])
     return top_board
 
 
@@ -56,7 +55,7 @@ def create_private_board():
 def create_card():
     data = request.get_json()
     data_handler.create_card(data["board_id"], data["status_id"])
-    return data_handler.get_all_from_table('cards')
+    return data_handler.get_all_from_table("cards")
 
 
 @app.route("/delete-card", methods=["GET", "POST"])
@@ -67,7 +66,7 @@ def delete_card():
     return response
 
 
-@app.route("/rename", methods=['GET', 'POST'])
+@app.route("/rename", methods=["GET", "POST"])
 @json_response
 def rename():
     data = request.get_json()
@@ -75,15 +74,15 @@ def rename():
     return response
 
 
-@app.route('/drag&drop', methods=['GET', 'POST'])
+@app.route("/drag&drop", methods=["GET", "POST"])
 @json_response
 def drag_and_drop():
     data = request.get_json()
-    response = data_handler.update_status(data['new_id'], data['old_id'])
+    response = data_handler.update_status(data["new_id"], data["old_id"])
     return response
 
 
-@app.route("/rename-status", methods=['GET', 'POST'])
+@app.route("/rename-status", methods=["GET", "POST"])
 @json_response
 def rename_status():
     data = request.get_json()
@@ -91,7 +90,7 @@ def rename_status():
     return response
 
 
-@app.route("/rename-card", methods=['GET', 'POST'])
+@app.route("/rename-card", methods=["GET", "POST"])
 @json_response
 def rename_card():
     data = request.get_json()
@@ -118,67 +117,65 @@ def delete_board():
 @json_response
 def board_open_close():
     data = request.get_json()
-    response = data_handler.change_board_open_close(data['boolean'], data['id'])
+    response = data_handler.change_board_open_close(data["boolean"], data["id"])
     return response
 
 
-@app.route('/check_username', methods=['GET', 'POST'])
+@app.route("/check_username", methods=["GET", "POST"])
 @json_response
 def check_username():
     data = request.get_json()
-    response = data_handler.check_user_data('username', data['username'])
+    response = data_handler.check_user_data("username", data["username"])
     return response
 
 
-@app.route('/check_email', methods=['GET', 'POST'])
+@app.route("/check_email", methods=["GET", "POST"])
 @json_response
 def check_email():
     data = request.get_json()
-    response = data_handler.check_user_data('email_address', data['email'])
+    response = data_handler.check_user_data("email_address", data["email"])
     return response
 
 
-@app.route('/check_passwords', methods=['GET', 'POST'])
+@app.route("/check_passwords", methods=["GET", "POST"])
 @json_response
 def check_passwords():
     data = request.get_json()
-    psw = util.hash_password(data['psw'])
-    if not util.verify_password(data['pswAgain'], psw):
-        return 'True'
+    psw = util.hash_password(data["psw"])
+    if not util.verify_password(data["pswAgain"], psw):
+        return "True"
     else:
-        return 'False'
+        return "False"
 
 
-@app.route('/save_data', methods=['GET', 'POST'])
+@app.route("/save_data", methods=["GET", "POST"])
 @json_response
 def save_data():
     data = request.get_json()
-    psw = util.hash_password(data['password'])
-    data_handler.save_data(data['username'], data['email'], psw)
-    return 'done'
+    psw = util.hash_password(data["password"])
+    data_handler.save_data(data["username"], data["email"], psw)
+    return "done"
 
 
-@app.route('/check_login', methods=['GET', 'POST'])
+@app.route("/check_login", methods=["GET", "POST"])
 @json_response
 def check_login():
     data = request.get_json()
-    if data_handler.check_user_data('username', data['username']) == 'True':
-        real_psw = data_handler.password_by_username(data['username'])
-        if not util.verify_password(data['password'], real_psw[0]['password']):
-            return 'False'
+    if data_handler.check_user_data("username", data["username"]) == "True":
+        real_psw = data_handler.password_by_username(data["username"])
+        if not util.verify_password(data["password"], real_psw[0]["password"]):
+            return "False"
         else:
-            return real_psw[0]['id']
+            return real_psw[0]["id"]
     else:
-        return 'False'
+        return "False"
 
 
 def main():
     app.run(debug=True, port=5008)
-
-    # Serving the favicon
     with app.app_context():
-        app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
+        app.add_url_rule("/favicon.ico", redirect_to=url_for("static", filename="favicon/favicon.ico"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
