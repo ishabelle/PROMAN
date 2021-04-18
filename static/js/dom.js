@@ -88,11 +88,13 @@ export let dom = {
         if (user !== null) {
             const addButton = `<section class="add-board">
                                 <div id="add-board">
-                                    <button type="button" id="myBtn">Add new board</button>
-                                    <button type="button" id="privBoard">Add private board</button>
-                                    <button value="registration" id="regBtn">Registration</button>
-                                    <button value="logout" id="logout">Logout</button><br><br>
-                                    <em>Logged in as ${user}</em>
+                                    <button type="button" id="myBtn"><i class="fa fa-users"></i> ADD NEW BOARD</button>
+                                    <button type="button" id="privBoard"><i class="fa fa-user-secret"></i> ADD PRIVATE BOARD</button>
+                                    <br><br>
+                                    <button value="registration" id="regBtn" hidden="true">Registration</button>
+                                    <button value="logout" id="logout"><i class="fa fa-sign-out"></i> SIGN OUT</button>
+                                    <br><br>
+                                    <h4 style="color: #0f4c42">Logged in as <strong style="font-size: 25px">${user}</strong></h4>
                                 </div>
                             </section>`;
             boardsContainer.insertAdjacentHTML('beforebegin', addButton);
@@ -100,9 +102,11 @@ export let dom = {
         } else {
             const addButton = `<section class="add-board">
                                 <div id="add-board">
-                                    <button type="button" id="myBtn">Add new board</button>
-                                    <button value="registration" id="regBtn">Registration</button>
-                                    <button value="login" id="login">Login</button>
+                                    <button value="registration" id="regBtn"><i class="fa fa-pencil-square-o"></i> REGISTER</button>
+                                    <button value="login" id="login"><i class="fa fa-sign-in"></i> SIGN IN</button>
+                                    <br><br>
+                                    <button type="button" id="myBtn"><i class="fa fa-clone"></i> ADD NEW BOARD</button>
+                                    
                                 </div>
                             </section>`;
             boardsContainer.insertAdjacentHTML('beforebegin', addButton);
