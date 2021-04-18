@@ -34,12 +34,10 @@ function initSlot(slot) {
     slot.addEventListener('drop', Drag_drop);
 }
 
-
 function dragStart(e) {
     this.classList.add('dragged');
     e.dataTransfer.setData("card", e.target.className);
 }
-
 
 function dragEnd() {
     this.classList.remove('dragged');
@@ -51,22 +49,18 @@ function dragEnd() {
     })
 }
 
-
 function DragEnter(e) {
     if (e.dataTransfer.types.includes("card")) {
         e.preventDefault();
     }
 }
 
-
 function DragOver(e) {
     e.preventDefault();
 }
 
-
 function DragLeave(e) {
 }
-
 
 function Drag_drop(e) {
     if (e.dataTransfer.types.includes("card")) {
