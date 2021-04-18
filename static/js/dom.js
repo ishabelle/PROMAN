@@ -19,9 +19,9 @@ export let dom = {
                 const outerHtml = `
                 <section class="board" id="boardSection${board.id}">
                     <div class="board-header" id="board${board.id}"><span class="board-title" id="title${board.id}">${board.title}</span>
-                        <button class="board-add" data-column-id="${board.id}">Add column</button>
-                        <button class="board-add" data-board-id="${board.id}">Add Card</button>
-                        <i class="fa fa-trash" id="delete-board-button${board.id}" aria-hidden="true"></i>
+                        <button class="board-add" data-column-id="${board.id}"><i class="fa fa-plus"></i> NEW COLUMN</button>
+                        <button class="board-add" data-board-id="${board.id}"><i class="fa fa-plus"></i> NEW CARD</button>
+                        <button><i class="fa fa-trash" id="delete-board-button${board.id}" aria-hidden="true"></i></button>
                         <button class="board-toggle" id="toggle${board.id}"><i class="fas fa-chevron-down"></i></button>
                 </div>
                 <div class="board-columns"  data-id="${board.id}" id="col${board.id}" data-open="${board.open}"></div>
@@ -121,9 +121,9 @@ export let dom = {
                 let outerHtml = `
                         <section class="board" id="boardSection${response[0].id}">
                             <div class="board-header" id="board${response[0].id}"><span class="board-title" id="title${response[0].id}">${response[0].title}</span>
-                                <button class="board-add" data-column-id="${response[0].id}">Add column</button>
-                                <button class="board-add" data-board-id="${response[0].id}">Add Card</button>
-                                <i class="fa fa-trash" id="delete-board-button${response[0].id}" aria-hidden="true"></i>
+                                <button class="board-add" data-column-id="${response[0].id}"><i class="fa fa-plus"></i> NEW COLUMN</button>
+                                <button class="board-add" data-board-id="${response[0].id}"><i class="fa fa-plus"></i> NEW CARD</button>
+                                <button><i class="fa fa-trash" id="delete-board-button${response[0].id}" aria-hidden="true"></i></button>
                                 <button class="board-toggle" id="toggle${response[0].id}"><i class="fas fa-chevron-down"></i></button>
                             </div>
                             <div class="board-columns" data-id="${response[0].id}" id="col${response[0].id}" data-open="${response[0].open}"></div>
