@@ -31,13 +31,15 @@ function initSlot(slot) {
     slot.addEventListener('dragenter', DragEnter);
     slot.addEventListener('dragover', DragOver);
     slot.addEventListener('dragleave', DragLeave);
-    slot.addEventListener('drop', DragDrop);
+    slot.addEventListener('drop', Drag_drop);
 }
+
 
 function dragStart(e) {
     this.classList.add('dragged');
     e.dataTransfer.setData("card", e.target.className);
 }
+
 
 function dragEnd() {
     this.classList.remove('dragged');
@@ -49,21 +51,24 @@ function dragEnd() {
     })
 }
 
+
 function DragEnter(e) {
     if (e.dataTransfer.types.includes("card")) {
         e.preventDefault();
     }
 }
 
+
 function DragOver(e) {
     e.preventDefault();
 }
+
 
 function DragLeave(e) {
 }
 
 
-function DragDrop(e) {
+function Drag_drop(e) {
     if (e.dataTransfer.types.includes("card")) {
         let cardElement = document.querySelector('.dragged');
         e.currentTarget.appendChild(cardElement);
