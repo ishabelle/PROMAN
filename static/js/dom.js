@@ -117,7 +117,7 @@ export let dom = {
         let addButton = document.querySelector('#myBtn');
         addButton.addEventListener('click', function () {
             let data = {'owner': null};
-            dataHandler._api_post('http://127.0.0.1:5000/create-new-board', data, (response) => {
+            dataHandler._api_post('http://127.0.0.1:5005/create-new-board', data, (response) => {
                 let outerHtml = `
                         <section class="board" id="boardSection${response[0].id}">
                             <div class="board-header" id="board${response[0].id}"><span class="board-title" id="title${response[0].id}">${response[0].title}</span>
@@ -144,7 +144,7 @@ export let dom = {
         let addButton = document.querySelector('#privBoard');
         addButton.addEventListener('click', function () {
             let data = {'owner': id};
-            dataHandler._api_post('http://127.0.0.1:5000/create-private-board', data, (response) => {
+            dataHandler._api_post('http://127.0.0.1:5005/create-private-board', data, (response) => {
                 let outerHtml = `
                         <section class="board" id="boardSection${response[0].id}">
                             <div class="board-header" id="board${response[0].id}"><span class="board-title" id="title${response[0].id}">${response[0].title}</span>
@@ -188,7 +188,7 @@ export let dom = {
                     title = 'unnamed'
                 }
                 let data = {"title": title, "id": id};
-                dataHandler._api_post('http://127.0.0.1:5000/rename', data, () => {
+                dataHandler._api_post('http://127.0.0.1:5005/rename', data, () => {
                     let boardTitle = document.getElementById(`title${id}`);
                     let newTitle = `<span class="board-title" id="title${id}">${title}</span>`;
                     boardDiv.removeChild(boardTitle);
@@ -210,7 +210,7 @@ export let dom = {
                     title = 'unnamed'
                 }
                 let data = {"title": title, "id": statusId};
-                dataHandler._api_post('http://127.0.0.1:5000/rename-status', data, () => {
+                dataHandler._api_post('http://127.0.0.1:5005/rename-status', data, () => {
                     let statusTitle = document.getElementById(`status${statusId}`);
                     statusTitle.outerHTML = `<div class="board-column-title" id="status${statusId}">${title}</div>`;
                     dom.renameStatus(statusId, title);
@@ -230,7 +230,7 @@ export let dom = {
                     title = 'unnamed'
                 }
                 let data = {"title": title, "id": cardId};
-                dataHandler._api_post('http://127.0.0.1:5000/rename-card', data, () => {
+                dataHandler._api_post('http://127.0.0.1:5005/rename-card', data, () => {
                     let cardTitle = document.getElementById(`card${cardId}`);
                     cardTitle.outerHTML = `<div class="card-title" id="card${cardId}">${title}</div>`;
                     dom.renameCards(cardId, title);
@@ -275,12 +275,12 @@ export let dom = {
             if (col.dataset.open === 'true') {
                 col.dataset.open = 'false';
                 let data = {'boolean': col.dataset.open, 'id': board_id};
-                dataHandler._api_post('http://127.0.0.1:5000/board-open-close', data, (response) => {
+                dataHandler._api_post('http://127.0.0.1:5005/board-open-close', data, (response) => {
                 });
             } else {
                 col.dataset.open = 'true';
                 let data = {'boolean': col.dataset.open, 'id': board_id};
-                dataHandler._api_post('http://127.0.0.1:5000/board-open-close', data, (response) => {
+                dataHandler._api_post('http://127.0.0.1:5005/board-open-close', data, (response) => {
                 });
             }
         })
