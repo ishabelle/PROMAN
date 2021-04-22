@@ -1,6 +1,3 @@
-import {dom} from "./dom.js";
-
-
 export let dataHandler = {
     _data: {},
     _api_get: function (url, callback) {
