@@ -177,7 +177,7 @@ def check_login():
 
 
 def main():
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5005)
 
     # Serving the favicon
     with app.app_context():
