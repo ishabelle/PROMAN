@@ -46,7 +46,7 @@ function dragEnd() {
     let oldId = this.id;
     let newId = this.parentNode.dataset.status;
     let data = {'new_id': newId, 'old_id': oldId};
-    dataHandler._api_post('http://127.0.0.1:5000/drag&drop', data, (response) => {
+    dataHandler._api_post('http://127.0.0.1:5005/drag&drop', data, (response) => {
         let res = response;
     })
 }
