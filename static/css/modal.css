@@ -20,12 +20,12 @@ input[type=text]:focus, input[type=password]:focus {
 .signupbtn {
     background-color: #0f4c42;
     color: white;
-    padding: 14px 20px;
+    padding: 5px;
+    width: 100%;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+    position: center;
 }
 
 .loginbtn,
@@ -35,8 +35,7 @@ input[type=text]:focus, input[type=password]:focus {
 
 .loginbtn,
 .signupbtn {
-    float: left;
-    width: 50%;
+    width: 100px;
 }
 
 .container {

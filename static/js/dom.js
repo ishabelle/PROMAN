@@ -99,7 +99,7 @@ export let dom = {
                                     <button type="button" id="myBtn"><i class="fa fa-users"></i> ADD NEW BOARD</button>
                                     <button type="button" id="privBoard"><i class="fa fa-user-secret"></i> ADD PRIVATE BOARD</button>
                                     <br><br>
-                                    <button value="registration" id="regBtn" hidden="true">Registration</button>
+                                    <button value="registration" id="regBtn" hidden="true">.</button>
                                     <button value="logout" id="logout"><i class="fa fa-sign-out"></i> SIGN OUT</button>
                                     <br><br>
                                     <h4 style="color: white">Logged in as <strong style="font-size: 25px; color: #0f4c42">${user}</strong></h4>
