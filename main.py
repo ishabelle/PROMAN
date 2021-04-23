@@ -74,7 +74,7 @@ def rename():
     return response
 
 
-@app.route("/drag&drop", methods=["GET", "POST"])
+@app.route("/drag_drop", methods=["GET", "POST"])
 @json_response
 def drag_and_drop():
     data = request.get_json()
