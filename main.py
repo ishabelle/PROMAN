@@ -7,11 +7,6 @@ import data_handler
 
 app = Flask(__name__)
 
-# Joel: joel123
-# Adam: adam123
-# Alex: alex123
-# Gergő: gergo123
-
 
 @app.route("/")
 def index():
