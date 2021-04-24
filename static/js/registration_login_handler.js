@@ -24,11 +24,13 @@ export let start = function start() {
         checkLoginData();
     }
 
+
     function closeModal(btn, modal) {
         btn.addEventListener('click', () => {
             modal.style.display = 'none'
         })
     }
+
 
     function openModal(btn, modal) {
         btn.addEventListener('click', () => {
@@ -40,6 +42,7 @@ export let start = function start() {
             modal.style.display = 'block'
         })
     }
+
 
     function checkRegData() {
         regSub.addEventListener('click', () => {
@@ -68,12 +71,13 @@ export let start = function start() {
         })
     }
 
+
     function checkReg(username, email, password, passwordAgain) {
         return new Promise(resolve => {
             checkUsername(username, () => checkEmail(email, () => checkPasswords(password, passwordAgain, () => resolve(result.includes(false)))))
         })
-
     }
+
 
     function checkUsername(username, callback) {
         let data = {'username': username};
@@ -89,6 +93,7 @@ export let start = function start() {
         })
     }
 
+
     function checkEmail(email, callback) {
         let data = {'email': email};
         dataHandler._api_post('/check_email', data, (response) => {
@@ -102,6 +107,7 @@ export let start = function start() {
             }
         })
     }
+
 
     function checkPasswords(psw, pswAgain, callback) {
         let data = {'psw': psw, 'pswAgain': pswAgain};
@@ -117,6 +123,7 @@ export let start = function start() {
         })
     }
 
+
     function alertMessage(message, modal) {
         modal.innerHTML = '';
         modal.style.display = 'none';
@@ -127,6 +134,7 @@ export let start = function start() {
         closeModal(flashClose, modal);
     }
 
+
     function saveData(username, email, password) {
         let data = {'username': username, 'email': email, 'password': password};
         dataHandler._api_post('/save_data', data, (response) => {
@@ -134,12 +142,14 @@ export let start = function start() {
         })
     }
 
+
     function clearReg() {
         document.querySelector('#username').value = '';
         document.querySelector('#email').value = '';
         document.querySelector('#psw').value = '';
         document.querySelector('#psw-repeat').value = '';
     }
+
 
     function checkLoginData() {
         loginSub.addEventListener('click', () => {
@@ -153,6 +163,7 @@ export let start = function start() {
             }
         })
     }
+
 
     function checkLogin(username, password) {
         let data = {'username': username, 'password': password};
@@ -171,10 +182,12 @@ export let start = function start() {
         })
     }
 
+
     function clearLogin() {
         document.querySelector('#user').value = '';
         document.querySelector('#password').value = '';
     }
+
 
     function logout() {
         let logoutBtn = document.querySelector('#logout');
@@ -184,6 +197,7 @@ export let start = function start() {
             location.reload()
         })
     }
+
 
     init();
 };
