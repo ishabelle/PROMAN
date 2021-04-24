@@ -10,11 +10,13 @@ export let dom = {
     init: function () {
     },
 
+
     loadBoards: function () {
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards, dom.loadStatuses);
         });
     },
+
 
     showBoards: function (boards, callback) {
         for (let board of boards) {
@@ -41,11 +43,13 @@ export let dom = {
         }
     },
 
+
     loadStatuses: function () {
         dataHandler.getStatuses(function (statuses) {
             dom.showStatuses(statuses, dom.loadCards);
         });
     },
+
 
     showStatuses: function (statuses, callback) {
         let boards = document.querySelectorAll('.board-columns');
@@ -67,11 +71,13 @@ export let dom = {
         callback();
     },
 
+
     loadCards: function () {
         dataHandler.getCardsByStatusId(function (cards) {
             dom.showCards(cards, dom.deleteCard)
         })
     },
+
 
     showCards: function (cards, callback) {
         let statuses = document.querySelectorAll('.board-column-content');
@@ -90,6 +96,7 @@ export let dom = {
         }
         callback();
     },
+
 
     createAddBoardButton: function (callback) {
         let boardsContainer = document.querySelector('.board-container');
@@ -122,6 +129,7 @@ export let dom = {
         }
     },
 
+
     addBoard: function () {
         let addButton = document.querySelector('#myBtn');
         addButton.addEventListener('click', function () {
@@ -149,6 +157,7 @@ export let dom = {
             })
         });
     },
+
 
     addPrivateBoard: function () {
         let addButton = document.querySelector('#privBoard');
@@ -178,6 +187,7 @@ export let dom = {
         });
     },
 
+
     createCard: function () {
         let board_id = this.dataset.boardId;
         let status_id = document.querySelector("[data-id=" + CSS.escape(board_id) + "]").querySelector('.board-column-content').dataset.statusId;
@@ -185,6 +195,7 @@ export let dom = {
             dom.loadCards();
         })
     },
+
 
     renameBoard: function (id, title) {
         let boardTitle = document.getElementById(`title${id}`);
@@ -212,6 +223,7 @@ export let dom = {
         })
     },
 
+
     renameStatus: function (statusId, statusTitleOriginal) {
         let statusTitle = document.getElementById(`status${statusId}`);
         statusTitle.addEventListener('click', () => {
@@ -232,6 +244,7 @@ export let dom = {
             })
         })
     },
+
 
     renameCards: function (cardId, cardTitleOriginal) {
         let cardTitle = document.getElementById(`card${cardId}`);
@@ -254,6 +267,7 @@ export let dom = {
         })
     },
 
+
     deleteCard: function () {
         let deleteButtons = document.querySelectorAll(".card-remove");
         for (let deleteButton of deleteButtons) {
@@ -263,6 +277,7 @@ export let dom = {
             });
         }
     },
+
 
     addColumn: function () {
         let board_id = this.dataset.columnId;
@@ -279,12 +294,14 @@ export let dom = {
         })
     },
 
+
     deleteBoard: function (board_id) {
         let deleteBoard = document.querySelector(`#delete-board-button${board_id}`);
         deleteBoard.addEventListener('click', function () {
             dataHandler.deleteBoard(board_id)
         });
     },
+
 
     boardOpenAndClose: function (board_id) {
         let toggle = document.querySelector(`#toggle${board_id}`);
