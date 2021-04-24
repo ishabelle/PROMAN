@@ -9,11 +9,13 @@ export let drag = {
     }
 };
 
+
 function initCards(cards) {
     for (const card of cards) {
         initCard(card);
     }
 }
+
 
 function initCard(card) {
     card.addEventListener('dragstart', dragStart);
@@ -21,11 +23,13 @@ function initCard(card) {
     card.setAttribute("draggable", "true");
 }
 
+
 function initCardSlots(cardSlots) {
     for (const slot of cardSlots) {
         initSlot(slot);
     }
 }
+
 
 function initSlot(slot) {
     slot.addEventListener('dragenter', DragEnter);
