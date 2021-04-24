@@ -10,4 +10,5 @@ function init() {
     dom.addPrivateBoard();
 }
 
+
 init();
