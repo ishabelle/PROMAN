@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS boards;
 CREATE TABLE boards
 (
     id    serial NOT NULL PRIMARY KEY,
-    title text DEFAULT 'Undefined',
+    title text DEFAULT 'Click to change',
     owner integer,
     open  boolean
 );
@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS statuses;
 CREATE TABLE statuses
 (
     id       serial  NOT NULL PRIMARY KEY,
-    title    text DEFAULT 'Undefined',
+    title    text DEFAULT 'Click to change',
     board_id integer NOT NULL
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE cards
 (
     id        serial  NOT NULL PRIMARY KEY,
     board_id  integer NOT NULL,
-    title     text DEFAULT 'Undefined',
+    title     text DEFAULT 'Click to change',
     status_id integer NOT NULL,
     "order"   serial  NOT NULL
 );
