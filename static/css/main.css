@@ -84,7 +84,6 @@ section.board {
     flex-grow: 1;
     min-width: 200px;
     max-width: 200px;
-
 }
 
 .board-column-content {
@@ -95,7 +94,6 @@ section.board {
 }
 
 .board-column-content:empty {
-    /*This only works if the tag is really empty and there is not even whitespace inside*/
     border: 1px solid #cdcdcd;
     margin-top: 4px;
     border-radius: 5px;
@@ -107,7 +105,7 @@ section.board {
     text-transform: uppercase;
     font-weight: bold;
     text-shadow: 1px 1px #328471;
-    }
+}
 
 .card {
     position: relative;
